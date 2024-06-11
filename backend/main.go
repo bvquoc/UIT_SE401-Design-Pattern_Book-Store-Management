@@ -25,7 +25,6 @@ func main() {
 
 	appCtx := appctx.NewAppContext(
 		db,
-		cfg.LogDir,
 		cfg.SecretKey,
 		cfg.StaticPath,
 		cfg.ServerHost,
@@ -35,7 +34,6 @@ func main() {
 		cfg.SMTPort)
 
 	srv := server.NewServerBuilder(appCtx).
-		SetReleaseMode().
 		SetMiddlewares().
 		SetRoutes().
 		Build()

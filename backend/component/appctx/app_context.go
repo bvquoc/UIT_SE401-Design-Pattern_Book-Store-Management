@@ -6,7 +6,6 @@ import (
 
 type AppContext interface {
 	GetMainDBConnection() *gorm.DB
-	GetLogDir() string
 	GetSecretKey() string
 	GetStaticPath() string
 	GetServerHost() string
@@ -30,7 +29,6 @@ type appCtx struct {
 
 func NewAppContext(
 	db *gorm.DB,
-	logdir string,
 	secretKey string,
 	staticPath string,
 	serverHost string,
@@ -41,7 +39,6 @@ func NewAppContext(
 ) *appCtx {
 	return &appCtx{
 		db:         db,
-		logdir:     logdir,
 		secretKey:  secretKey,
 		staticPath: staticPath,
 		serverHost: serverHost,
