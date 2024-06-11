@@ -17,7 +17,6 @@ type AppContext interface {
 
 type appCtx struct {
 	db         *gorm.DB
-	logdir     string
 	secretKey  string
 	staticPath string
 	serverHost string
@@ -79,8 +78,4 @@ func (ctx *appCtx) GetSMTPHost() string {
 
 func (ctx *appCtx) GetSMTPPort() int {
 	return ctx.smtpPort
-}
-
-func (ctx *appCtx) GetLogDir() string {
-	return ctx.logdir
 }
