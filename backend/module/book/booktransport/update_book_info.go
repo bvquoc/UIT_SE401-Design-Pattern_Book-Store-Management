@@ -10,9 +10,10 @@ import (
 	"book-store-management-backend/module/book/bookstore"
 	"book-store-management-backend/module/booktitle/booktitlestore"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
+
+	"github.com/gin-gonic/gin"
 )
 
 // UpdateBookInfo
@@ -38,7 +39,6 @@ func UpdateBookInfo(appCtx appctx.AppContext) gin.HandlerFunc {
 		}
 		if id == "" {
 			panic(common.ErrInvalidRequest(fmt.Errorf("id is empty")))
-			return
 		}
 
 		requester := c.MustGet(common.CurrentUserStr).(middleware.Requester)
