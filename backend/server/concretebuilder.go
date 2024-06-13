@@ -3,25 +3,7 @@ package server
 import (
 	"book-store-management-backend/component/appctx"
 	"book-store-management-backend/middleware"
-	"book-store-management-backend/module/author/authortransport"
-	"book-store-management-backend/module/book/booktransport"
-	"book-store-management-backend/module/booktitle/booktitletransport"
-	"book-store-management-backend/module/category/categorytransport"
-	"book-store-management-backend/module/customer/customertransport/gincustomer"
-	"book-store-management-backend/module/dashboard/dashboardtransport/gindashboard"
-	"book-store-management-backend/module/feature/featuretransport/ginfeature"
-	"book-store-management-backend/module/importnote/importnotetransport/ginimportnote"
-	"book-store-management-backend/module/inventorychecknote/inventorychecknotetransport/gininventorychecknote"
-	"book-store-management-backend/module/invoice/invoicetransport/gininvoice"
-	"book-store-management-backend/module/publisher/publishertransport"
-	"book-store-management-backend/module/role/roletransport/ginrole"
-	"book-store-management-backend/module/salereport/salereporttransport/ginsalereport"
-	"book-store-management-backend/module/shopgeneral/shopgeneraltransport/ginshopgeneral"
-	ginstockreports "book-store-management-backend/module/stockreport/stockreporttransport/ginstockreport"
-	"book-store-management-backend/module/supplier/suppliertransport/ginsupplier"
-	"book-store-management-backend/module/supplierdebtreport/supplierdebtreporttransport/ginsupplierdebtreport"
-	"book-store-management-backend/module/upload/uploadtransport"
-	"book-store-management-backend/module/user/usertransport/ginuser"
+	"book-store-management-backend/server/routerfacade"
 
 	"book-store-management-backend/docs"
 
@@ -52,31 +34,27 @@ func (b *ConcreteServerBuilder) SetMiddlewares() ServerBuilder {
 func (b *ConcreteServerBuilder) SetRoutes() ServerBuilder {
 	docs.SwaggerInfo.BasePath = "/v1"
 	v1 := b.router.Group("/v1")
-	{
-		v1.GET("/docs/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
-		uploadtransport.SetupRoutes(v1, b.appCtx)
+	v1.GET("/docs/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
-		authortransport.SetupRoutes(v1, b.appCtx)
-		categorytransport.SetupRoutes(v1, b.appCtx)
-		booktitletransport.SetupRoutes(v1, b.appCtx)
-		booktransport.SetupRoutes(v1, b.appCtx)
-		publishertransport.SetupRoutes(v1, b.appCtx)
-		gininvoice.SetupRoutes(v1, b.appCtx)
-		ginimportnote.SetupRoutes(v1, b.appCtx)
-		gininventorychecknote.SetupRoutes(v1, b.appCtx)
-		ginsupplier.SetupRoutes(v1, b.appCtx)
-		gincustomer.SetupRoutes(v1, b.appCtx)
-		ginrole.SetupRoutes(v1, b.appCtx)
-		ginfeature.SetupRoutes(v1, b.appCtx)
-		ginuser.SetupRoutes(v1, b.appCtx)
-		ginshopgeneral.SetupRoutes(v1, b.appCtx)
-		gindashboard.SetupRoutes(v1, b.appCtx)
-		report := v1.Group("/reports")
-		{
-			ginstockreports.SetupRoutes(report, b.appCtx)
-			ginsupplierdebtreport.SetupRoutes(report, b.appCtx)
-			ginsalereport.SetupRoutes(report, b.appCtx)
-		}
+	routerFacade := routerfacade.NewRouteFacade(v1, b.appCtx)
+	{
+		routerFacade.SetUpload()
+		routerFacade.SetAuthor()
+		routerFacade.SetCategory()
+		routerFacade.SetBookTitle()
+		routerFacade.SetBook()
+		routerFacade.SetPublisher()
+		routerFacade.SetInvoice()
+		routerFacade.SetImportNote()
+		routerFacade.SetInventoryCheckNote()
+		routerFacade.SetSupplier()
+		routerFacade.SetCustomer()
+		routerFacade.SetRole()
+		routerFacade.SetFeature()
+		routerFacade.SetUser()
+		routerFacade.SetShopGeneral()
+		routerFacade.SetDashboard()
+		routerFacade.SetReport()
 	}
 	return b
 }
